@@ -89,9 +89,15 @@ public class Main {
                 }
                 case 3 -> {
                     System.out.print("Введіть назву файлу: ");
-                    instance = InputOutput.readFromFile(sc.next());
-
-                    System.out.println("Задачу зчитано з файлу.");
+                    String filename = sc.next();
+                    try {
+                        instance = InputOutput.readFromFile(filename);
+                        System.out.println("Задачу зчитано з файлу.");
+                    } catch (java.io.FileNotFoundException e) {
+                        System.out.println("Помилка: файл не знайдено. Перевірте назву файлу і повторіть спробу.");
+                    } catch (Exception e) {
+                        System.out.println("Сталася помилка при зчитуванні з файлу: " + e.getMessage());
+                    }
                     return;
                 }
                 case 0 -> {
@@ -118,7 +124,7 @@ public class Main {
         int geneticValue = evaluate(genetic, instance);
         System.out.println("Генетичний алгоритм:");
         printSchedule(genetic, instance);
-        System.out.println("Максимальний час обробки: " + geneticValue + "\n");
+        System.out.println("Максимальний час обробки: " + geneticValue);
     }
 
     private static void outputMenu() throws Exception {
