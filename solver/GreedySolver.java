@@ -9,14 +9,21 @@ public class GreedySolver {
         int[] assignment = new int[instance.n];
         Arrays.fill(assignment, -1);
 
+        Integer[] indexes = new Integer[instance.n];
         for (int i = 0; i < instance.n; i++) {
+            indexes[i] = i;
+        }
+
+        Arrays.sort(indexes, (index1, index2) -> Integer.compare(instance.processingTimes[index2], instance.processingTimes[index1]));
+
+        for (int index : indexes) {
             int bestMachine = -1;
             int minLoad = Integer.MAX_VALUE;
 
             for (int j = 0; j < instance.m; j++) {
                 boolean conflict = false;
-                for (int k = 0; k < i; k++) {
-                    if (assignment[k] == j && instance.incompatibilities[i][k]) {
+                for (int k = 0; k < instance.n; k++) {
+                    if (assignment[k] == j && instance.incompatibilities[index][k]) {
                         conflict = true;
                         break;
                     }
@@ -35,11 +42,9 @@ public class GreedySolver {
                     }
                 }
             }
-
-            assignment[i] = bestMachine;
-            machineLoad[bestMachine] += instance.processingTimes[i];
+            assignment[index] = bestMachine;
+            machineLoad[bestMachine] += instance.processingTimes[index];
         }
-
         return assignment;
     }
 }

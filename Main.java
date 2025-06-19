@@ -4,7 +4,9 @@ import solver.GeneticSolver;
 import util.Generator;
 import util.InputOutput;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -36,7 +38,7 @@ public class Main {
         }
     }
 
-    private static void inputMenu() throws Exception {
+    private static void inputMenu(){
         while (true) {
             System.out.println("""
                     \nПідменю для внесення даних задачі.
@@ -117,13 +119,13 @@ public class Main {
         int[] greedy = GreedySolver.solve(instance);
         int greedyValue = evaluate(greedy, instance);
         System.out.println("Жадібний алгоритм:");
-        printSchedule(greedy, instance);
+        printSchedule(greedy, instance, true);
         System.out.println("Максимальний час обробки: " + greedyValue + "\n");
 
         int[] genetic = GeneticSolver.solve(instance, 50, 100, 0.1);
         int geneticValue = evaluate(genetic, instance);
         System.out.println("Генетичний алгоритм:");
-        printSchedule(genetic, instance);
+        printSchedule(genetic, instance, false);
         System.out.println("Максимальний час обробки: " + geneticValue);
     }
 
@@ -306,20 +308,32 @@ public class Main {
         }
     }
 
-    private static void printSchedule(int[] solution, ProblemInstance instance) {
+    private static void printSchedule(int[] solution, ProblemInstance instance, boolean sortByProcessingTime) {
+        List<List<Integer>> machineAssignments = new ArrayList<>();
+        for (int i = 0; i < instance.m; i++) {
+            machineAssignments.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < instance.n; i++) {
+            machineAssignments.get(solution[i]).add(i);
+        }
+
         for (int machine = 0; machine < instance.m; machine++) {
+            List<Integer> tasks = machineAssignments.get(machine);
+
+            if (sortByProcessingTime) {
+                tasks.sort((a, b) -> Integer.compare(instance.processingTimes[b], instance.processingTimes[a]));
+            }
+
             System.out.print("Верстат " + machine + ": ");
-            boolean empty = true;
-            for (int i = 0; i < instance.n; i++) {
-                if (solution[i] == machine) {
+            if (tasks.isEmpty()) {
+                System.out.println("немає деталей");
+            } else {
+                for (int i : tasks) {
                     System.out.print("Деталь " + i + " (" + instance.processingTimes[i] + ") ");
-                    empty = false;
                 }
+                System.out.println();
             }
-            if (empty) {
-                System.out.print("немає деталей");
-            }
-            System.out.println();
         }
     }
 }
