@@ -122,7 +122,7 @@ public class Main {
         printSchedule(greedy, instance, true);
         System.out.println("Максимальний час обробки: " + greedyValue + "\n");
 
-        int[] genetic = GeneticSolver.solve(instance, 50, 100, 0.1);
+        int[] genetic = GeneticSolver.solve(instance, 200, 500, 0.05);
         int geneticValue = evaluate(genetic, instance);
         System.out.println("Генетичний алгоритм:");
         printSchedule(genetic, instance, false);
@@ -337,6 +337,3 @@ public class Main {
         }
     }
 }
-
-
-

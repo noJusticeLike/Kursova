@@ -18,8 +18,8 @@ public class GeneticSolver {
             newPopulation.add(best.clone());
 
             while (newPopulation.size() < populationSize) {
-                int[] parent1 = tournamentSelection(population, instance, 3);
-                int[] parent2 = tournamentSelection(population, instance, 3);
+                int[] parent1 = tournamentSelection(population, instance, 5);
+                int[] parent2 = tournamentSelection(population, instance, 5);
                 int[] child = crossover(parent1, parent2, instance);
                 mutate(child, instance, mutationProbability);
                 reanimate(child, instance);
@@ -43,6 +43,8 @@ public class GeneticSolver {
 
     private static List<int[]> initializePopulation(ProblemInstance instance, int size) {
         List<int[]> population = new ArrayList<>();
+        int[] greedySolution = GreedySolver.solve(instance);
+        population.add(greedySolution);
 
         while (population.size() < size) {
             int[] assignment = new int[instance.n];
@@ -68,26 +70,35 @@ public class GeneticSolver {
     }
 
     private static void mutate(int[] solution, ProblemInstance instance, double mutationProbability) {
-        if (rand.nextDouble() < mutationProbability) {
-            int i = rand.nextInt(instance.n);
-            solution[i] = rand.nextInt(instance.m);
+        for (int i = 0; i < solution.length; i++) {
+            if (rand.nextDouble() < mutationProbability) {
+                solution[i] = rand.nextInt(instance.m);
+            }
         }
     }
 
     private static void reanimate(int[] solution, ProblemInstance instance) {
-        for (int m = 0; m < instance.m; m++) {
-            for (int i = 0; i < instance.n; i++) {
-                for (int j = i + 1; j < instance.n; j++) {
-                    if (solution[i] == m && solution[j] == m &&
-                            instance.incompatibilities[i][j]) {
-                        if (instance.processingTimes[i] < instance.processingTimes[j])
-                            solution[i] = (solution[i] + 1) % instance.m;
-                        else
-                            solution[j] = (solution[j] + 1) % instance.m;
+        boolean changed;
+        int maxTries = 1000;
+        int tries = 0;
+        do {
+            changed = false;
+            for (int m = 0; m < instance.m; m++) {
+                for (int i = 0; i < instance.n; i++) {
+                    for (int j = i + 1; j < instance.n; j++) {
+                        if (solution[i] == m && solution[j] == m &&
+                                instance.incompatibilities[i][j]) {
+                            if (instance.processingTimes[i] < instance.processingTimes[j])
+                                solution[i] = (solution[i] + 1) % instance.m;
+                            else
+                                solution[j] = (solution[j] + 1) % instance.m;
+                            changed = true;
+                        }
                     }
                 }
             }
-        }
+            tries++;
+        } while (changed && tries < maxTries);
     }
 
     private static int[] tournamentSelection(List<int[]> population, ProblemInstance instance, int tournamentSize) {
