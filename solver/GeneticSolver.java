@@ -79,7 +79,7 @@ public class GeneticSolver {
 
     private static void reanimate(int[] solution, ProblemInstance instance) {
         boolean changed;
-        int maxTries = 1000;
+        int maxTries = 100;
         int tries = 0;
         do {
             changed = false;
