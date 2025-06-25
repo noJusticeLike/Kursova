@@ -83,7 +83,7 @@ public class Main {
                     int m = readIntInRange("Кількість верстатів: ", 1, 100);
                     int minTime = readIntInRange("Мінімальний час обробки: ", 1, 100);
                     int maxTime = readIntInRange("Максимальний час обробки: ", minTime, 1000);
-                    double density = readDoubleInRange("Щільність несумісностей (0.0 - 1.0): ", 0.0, 1.0);
+                    double density = readDoubleInRange("Щільність несумісностей (0.0 - 0.5): ", 0.0, 0.5);
 
                     instance = Generator.generate(n, m, minTime, maxTime, density);
                     System.out.println("Задачу згенеровано випадково.");
@@ -181,7 +181,7 @@ public class Main {
                 case 1 -> {
                     int n = readInt("n (кількість деталей): ");
                     int m = readInt("m (кількість верстатів): ");
-                    double d = readDoubleInRange("Щільність несумісностей (0-1): ", 0, 1);
+                    double d = readDoubleInRange("Щільність несумісностей (0-0.5): ", 0, 0.5);
                     int mean = readInt("Математичне сподівання тривалості обробки: ");
                     int delta = readInt("Значення напівінтервалу: ");
                     int K = readInt("Кількість прогонів: ");
@@ -195,7 +195,7 @@ public class Main {
                 case 2 -> {
                     int n = readInt("n (кількість деталей): ");
                     int m = readInt("m (кількість верстатів): ");
-                    double d = readDoubleInRange("Щільність несумісностей (0-1): ", 0, 1);
+                    double d = readDoubleInRange("Щільність несумісностей (0-0.5): ", 0, 0.5);
                     int mean = readInt("Математичне сподівання тривалості обробки: ");
                     int delta = readInt("Значення напівінтервалу: ");
                     int K = readInt("Кількість прогонів: ");
@@ -209,7 +209,7 @@ public class Main {
                 case 3 -> {
                     int n = readInt("n (кількість деталей): ");
                     int m = readInt("m (кількість верстатів): ");
-                    double d = readDoubleInRange("Щільність несумісностей (0-1): ", 0, 1);
+                    double d = readDoubleInRange("Щільність несумісностей (0-0.5): ", 0, 0.5);
                     int delta = readInt("Значення напівінтервалу: ");
                     int K = readInt("Кількість прогонів: ");
                     int meanMin = readInt("Мінімальне математичне сподівання тривалості обробки: ");
@@ -221,7 +221,7 @@ public class Main {
 
                 case 4 -> {
                     int m = readInt("m (кількість верстатів): ");
-                    double d = readDoubleInRange("Щільність несумісностей (0-1): ", 0, 1);
+                    double d = readDoubleInRange("Щільність несумісностей (0-0.5): ", 0, 0.5);
                     int mean = readInt("Математичне сподівання тривалості обробки: ");
                     int delta = readInt("Значення напівінтервалу: ");
                     int K = readInt("Кількість прогонів: ");

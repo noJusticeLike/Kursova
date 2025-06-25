@@ -42,6 +42,24 @@ public class ChartUtil {
         JFreeChart chart = ChartFactory.createXYLineChart(title, xLabel, yLabel, dataset,
                 PlotOrientation.VERTICAL, true, true, false);
 
+        var plot = chart.getXYPlot();
+
+        double minY = Double.MAX_VALUE;
+        double maxY = Double.MIN_VALUE;
+        for (int i = 0; i < dataset.getSeriesCount(); i++) {
+            var series = dataset.getSeries(i);
+            for (int j = 0; j < series.getItemCount(); j++) {
+                double y = series.getY(j).doubleValue();
+                minY = Math.min(minY, y);
+                maxY = Math.max(maxY, y);
+            }
+        }
+
+        double padding = (maxY - minY) * 0.1;
+        if (padding == 0) padding = 1;
+
+        plot.getRangeAxis().setRange(minY - padding, maxY + padding);
+
         JFrame frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(800, 600);

@@ -13,6 +13,8 @@ public class TaskSizeExperiment {
 
         int steps = ((nMax - nMin) / nStep) + 1;
         double[] x = new double[steps];
+        double[] greedyValues = new double[steps];
+        double[] geneticValues = new double[steps];
         double[] greedyTimes = new double[steps];
         double[] geneticTimes = new double[steps];
 
@@ -47,6 +49,8 @@ public class TaskSizeExperiment {
             double averageGeneticTime = geneticTotalTime / 1_000_000.0 / k;
 
             x[index] = n;
+            greedyValues[index] = averageGreedyValue;
+            geneticValues[index] = averageGeneticValue;
             greedyTimes[index] = averageGreedyTime;
             geneticTimes[index] = averageGeneticTime;
 
@@ -56,6 +60,12 @@ public class TaskSizeExperiment {
             System.out.printf("  Відносна різниця ЦФ = %.2f%%\n", Math.abs(((averageGeneticValue - averageGreedyValue) * 100.0 / averageGreedyValue)));
             index++;
         }
+
+        ChartUtil.showMultipleLineChart("Порівняння результатів алгоритмів",
+                "Кількість верстатів", "Середнє начення ЦФ",
+                new String[]{"Жадібний алгоритм", "Генетичний алгоритм"},
+                x, new double[][]{greedyValues, geneticValues}
+        );
 
         ChartUtil.showMultipleLineChart("Залежність часу виконання від розміру задачі",
                 "Кількість верстатів", "Час виконання (мс)",
